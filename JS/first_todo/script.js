@@ -21,7 +21,7 @@ const add = () => {
   saveData();
 };
 
-// 入力したデータを配列にまとめる
+// 入力したデータを配列にまとめ、ローカルストレージへ
 const saveData = () => {
   const listItems = document.querySelectorAll("li");
   const listArray = [];
@@ -29,6 +29,9 @@ const saveData = () => {
     listArray.push(list.innerText);
     console.log(listArray);
   });
+  // ローカルストレージは文字列で保存してしまう
+  // 保存前にJSON形式に変換する(JSON.stringify)
+  localStorage.setItem("listArray", JSON.stringify(listArray));
 };
 
 // form上でenterを押すとページでリロードのイベントがされてしまう。
