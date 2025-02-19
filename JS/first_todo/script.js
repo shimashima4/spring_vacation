@@ -1,6 +1,7 @@
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 const ul = document.getElementById("ul");
+const todos = localStorage.getItem("");
 // enterが押されたときのイベント
 form.addEventListener("submit", (event) => {
   // 一度inputのvalueを代入する
