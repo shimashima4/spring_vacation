@@ -1,25 +1,30 @@
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 const ul = document.getElementById("ul");
-const todos = localStorage.getItem("");
+const todos = JSON.parse(localStorage.getItem("listArray"));
+// ↑キー名を指定して取得する
+// こちらも文字列で取得されると扱いづらいので
+// JSON.parseで元の配列型を保持
+
 // enterが押されたときのイベント
 form.addEventListener("submit", (event) => {
-  // 一度inputのvalueを代入する
+  // リロードされてしまうのでそれを阻止
   event.preventDefault();
-  let todoText = input.value;
-  if (todoText && todoText.match(/\S/g)) {
-    add();
-  }
+  // 一度inputのvalueを代入する
+  add();
 });
 
 const add = () => {
-  const li = document.createElement("li");
-  li.innerText = input.value;
-  li.classList.add("list-group-item");
-  ul.appendChild(li);
-  // inputの中身を空にしておく
-  input.value = "";
-  saveData();
+  let todoText = input.value;
+  if (todoText && todoText.match(/\S/g)) {
+    const li = document.createElement("li");
+    li.innerText = todoText;
+    li.classList.add("list-group-item");
+    ul.appendChild(li);
+    // inputの中身を空にしておく
+    input.value = "";
+    saveData();
+  }
 };
 
 // 入力したデータを配列にまとめ、ローカルストレージへ
@@ -31,8 +36,9 @@ const saveData = () => {
     console.log(listArray);
   });
   // ローカルストレージは文字列で保存してしまう
-  // 保存前にJSON形式に変換する(JSON.stringify)
+  // jsのオブジェクトとして保存するため、JSON形式に変換する(JSON.stringify)
   localStorage.setItem("listArray", JSON.stringify(listArray));
+  // keyはlistArray
 };
 
 // form上でenterを押すとページでリロードのイベントがされてしまう。
