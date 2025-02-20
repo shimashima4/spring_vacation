@@ -22,13 +22,19 @@ form.addEventListener("submit", (event) => {
 
 function add(todo) {
   let todoText = input.value;
+  // ローカルストレージにデータがある場合
   if (todo) {
-    todoText = todo;
+    todoText = todo.text;
   }
   if (todoText && todoText.match(/\S/g)) {
     const li = document.createElement("li");
     li.innerText = todoText;
     li.classList.add("list-group-item");
+
+    // ローカルストレージにデータがある且つ打ち消し線がついてる
+    if (todo && todo.completed) {
+      li.classList.add("text-decoration-line-through");
+    }
     // 右クリックのイベント
     li.addEventListener("contextmenu", function (event) {
       // 普通右クリックするとメニュータブが出てくるがそれを無効化
@@ -39,6 +45,9 @@ function add(todo) {
 
     li.addEventListener("click", function () {
       li.classList.toggle("text-decoration-line-through");
+      // このままではリロードすると線が消える
+      // データを保持するためにオブジェクトとして保存
+      saveData();
     });
     ul.appendChild(li);
     // inputの中身を空にしておく
@@ -53,7 +62,12 @@ function saveData() {
   const listItems = document.querySelectorAll("li");
   const listArray = [];
   listItems.forEach((list) => {
-    listArray.push(list.innerText);
+    // todoオブジェクトを作成し、クラスを判定する
+    let todo = {
+      text: list.innerText,
+      completed: list.classList.contains("text-decoration-line-through"),
+    };
+    listArray.push(todo);
   });
   // ローカルストレージは文字列形式で保存してしまう
   // JSON形式に変換する(JSON.stringify)
