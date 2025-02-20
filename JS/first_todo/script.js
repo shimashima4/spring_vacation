@@ -1,10 +1,17 @@
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 const ul = document.getElementById("ul");
-const todos = JSON.parse(localStorage.getItem("listArray"));
+const todos = JSON.parse(localStorage.getItem("todos"));
 // ↑キー名を指定して取得する
 // こちらも文字列で取得されると扱いづらいので
 // JSON.parseで元の配列型を保持
+
+if (todos) {
+  console.log("データがあります");
+  todos.forEach((todosItem) => {
+    add(todosItem);
+  });
+}
 
 // enterが押されたときのイベント
 form.addEventListener("submit", (event) => {
@@ -14,8 +21,11 @@ form.addEventListener("submit", (event) => {
   add();
 });
 
-const add = () => {
+function add(todo) {
   let todoText = input.value;
+  if (todo) {
+    todoText = todo;
+  }
   if (todoText && todoText.match(/\S/g)) {
     const li = document.createElement("li");
     li.innerText = todoText;
@@ -25,21 +35,20 @@ const add = () => {
     input.value = "";
     saveData();
   }
-};
+}
 
 // 入力したデータを配列にまとめ、ローカルストレージへ
-const saveData = () => {
+function saveData() {
   const listItems = document.querySelectorAll("li");
   const listArray = [];
   listItems.forEach((list) => {
     listArray.push(list.innerText);
-    console.log(listArray);
   });
-  // ローカルストレージは文字列で保存してしまう
-  // jsのオブジェクトとして保存するため、JSON形式に変換する(JSON.stringify)
-  localStorage.setItem("listArray", JSON.stringify(listArray));
+  // ローカルストレージは文字列形式で保存してしまう
+  // JSON形式に変換する(JSON.stringify)
+  localStorage.setItem("todos", JSON.stringify(listArray));
   // keyはlistArray
-};
+}
 
 // form上でenterを押すとページでリロードのイベントがされてしまう。
 // それを止めるために引数eventを設定する
