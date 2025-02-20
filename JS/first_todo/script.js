@@ -7,7 +7,6 @@ const todos = JSON.parse(localStorage.getItem("todos"));
 // JSON.parseで元の配列型を保持
 
 if (todos) {
-  console.log("データがあります");
   todos.forEach((todosItem) => {
     add(todosItem);
   });
@@ -30,6 +29,17 @@ function add(todo) {
     const li = document.createElement("li");
     li.innerText = todoText;
     li.classList.add("list-group-item");
+    // 右クリックのイベント
+    li.addEventListener("contextmenu", function (event) {
+      // 普通右クリックするとメニュータブが出てくるがそれを無効化
+      event.preventDefault();
+      li.remove();
+      saveData();
+    });
+
+    li.addEventListener("click", function () {
+      li.classList.toggle("text-decoration-line-through");
+    });
     ul.appendChild(li);
     // inputの中身を空にしておく
     input.value = "";
@@ -39,6 +49,7 @@ function add(todo) {
 
 // 入力したデータを配列にまとめ、ローカルストレージへ
 function saveData() {
+  // 場にあるliを取得
   const listItems = document.querySelectorAll("li");
   const listArray = [];
   listItems.forEach((list) => {
