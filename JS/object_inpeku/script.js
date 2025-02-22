@@ -7,4 +7,4 @@ const metaX = () => {
     },
   };
 };
-console.log(`レベル.${metaX.level()}`);
+console.log(`レベル：${metaX().level()}`);
