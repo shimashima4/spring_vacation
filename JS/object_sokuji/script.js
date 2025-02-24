@@ -30,7 +30,7 @@ const metaXalpha = function () {
 };
 
 console.log(`レベル：${metaX().level()}`);
-console.log(`レベル：${metaXbeta().level}`);
+console.log(`レベル：${metaXbeta.level()}`);
 console.log(`レベル：${metaXalpha().level()}`);
 console.log(`最大レベル：${_level}`);
 // 同じ名前の変数を定義しているが、
